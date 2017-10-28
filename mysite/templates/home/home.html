@@ -1,0 +1,208 @@
+<!--
+<html>
+{% load staticfiles %}
+<frameset rows="35%,*,3%" border="no-border">
+<frame src="{% static 'home/img/header2.png' %}" scrolling="no"  width="auto">
+<frameset cols="50%,*" border="no-border">
+  <frame src="homefaculty">
+  <frame src="homestudent">
+</frameset>
+
+</frameset>
+</html>
+-->
+<html>
+<head>
+{% load staticfiles %}
+<title>Music Genre Classification</title>
+<script>
+//alert("Please enter the track's name");
+function verify(){
+	var track_name = document.forms["home"]["track_name"].value;
+	var artist_name = document.forms["home"]["artist_name"].value;
+	var oauth_token = document.forms["home"]["oauth_token"].value;
+    if (track_name == "" || oauth_token == "")
+    {
+         //alert("All fields must be filled out");
+		 document.getElementById('errfn').innerHTML="⚠ All fields must be filled";
+         return false;
+    }
+    return true;
+ }
+</script>
+<style>
+@keyframes panning {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 100%;
+  }
+   50% {
+    background-position: 100% 0%;
+  }
+  75% {
+    background-position: 0 100%;
+  }
+  200% {
+    background-position: 0 0;
+  }
+}
+
+.test {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: url({% static 'home/img/bg.jpg' %});
+  background-size: 112%;
+  animation: panning 50s infinite linear;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  height: 60px;
+  width: 290px;
+  margin: auto;
+  font-family: Roboto;
+  font-size: 34px;
+  color: white;
+  font-weight: 100;
+  text-align: center;
+  padding: 10px 40px;
+  border: 3px solid #ccc;
+  border-radius: 2px;
+  -webkit-font-smoothing: antialiased;
+}
+
+strong {
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 52px;
+  vertical-align: middle;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+    background-image: url({% static 'home/img/bg.jpg' %});
+	background-repeat: no-repeat;
+	background-size:cover;
+}
+input {
+    width: 19%;
+	padding: 12px;
+    margin: 8px 0;
+	border: none;
+	border-bottom: 1.5px solid yellow;
+	-webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+	font-size: 20px;
+	padding-left:60px;
+	color:white;
+	//font-weight: bold;
+}
+input:focus {
+    border: none;
+    border-bottom: 3.5px solid orange;
+	width: 32%;
+	font-size: 25px;
+	outline: none;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: white;
+  font-weight: lighter;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: white;
+  font-weight: lighter;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: white;
+  font-weight: lighter;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: white;
+  font-weight: lighter;
+}
+.mainRunner
+{
+    position: relative;
+}
+.img1
+{
+    position:absolute;
+	top:__;
+	left:__;
+	z-index:50;
+}
+.img2
+{
+    position:absolute;
+	top:__;
+	left:__;
+	z-index:51;
+}
+.errfn
+{
+	color: white;
+	font-size: 20px;
+	font-family: sans-serif;
+	background: rgba(255, 255, 255, 0.3);
+	width: 30%;
+}
+@keyframes example {
+    0%   {background-color:red; left:0px; top:0px;}
+    25%  {background-color:yellow; left:200px; top:0px;}
+    50%  {background-color:blue; left:200px; top:200px;}
+    75%  {background-color:green; left:0px; top:200px;}
+    100% {background-color:red; left:0px; top:0px;}
+}
+</style>
+</head>
+<body class="test">
+<!-- <img src={% static 'home/img/genre-ly.png' %} height="70" width="210"> -->
+<div class="mainRunner">
+    <img class="img2" src={% static 'home/img/genre-ly.png' %}  height="70" width="210"/>
+    <img class="img1" src={% static 'home/img/logo-bg.png' %} height="70" width="100%"/>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<center>
+<form name="home" action="/predict/" method="POST"> {% csrf_token %}
+<input id="track_name" type="text" name="track_name" placeholder="Enter track's name" onfocus="this.placeholder = '';document.getElementById('errfn').innerHTML=''" onblur="this.placeholder = 'Enter track\'s name'" style="background: url({% static 'home/img/track.png' %}) no-repeat scroll 23px 12px; background-size: 27px 27px;"><br>
+<br>
+<input type="text" name="artist_name" placeholder="Enter artist's name" onfocus="this.placeholder = '';document.getElementById('errfn').innerHTML=''" onblur="this.placeholder = 'Enter artist\'s name'" style="background: url({% static 'home/img/artist.png' %}) no-repeat scroll 23px 12px; background-size: 27px 27px;"><br>
+<br>
+<!-- <input type="password" name="oauth_token" placeholder="Enter OAuth token" onfocus="this.placeholder = '';document.getElementById('errfn').innerHTML=''" onblur="this.placeholder = 'Enter OAuth token'" style="background: url({% static 'home/img/oauth.png' %}) no-repeat scroll 23px 12px; background-size: 27px 27px;"><br> -->
+<input type="image" name="submit" src={% static 'home/img/go.png' %} style="border: none; height:10%; width:4.7%; padding-left: 0px;" alt="submit" onclick="return verify()">
+</form>
+<p id="errfn" class="errfn"></p>
+</center>
+</body>
+</html>
